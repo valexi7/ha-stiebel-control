@@ -1,0 +1,211 @@
+  - type: sections
+    max_columns: 4
+    title: HEAT PUMP
+    path: heat-pump
+    icon: mdi:heating-coil
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+          - type: custom:apexcharts-card
+            apex_config:
+              chart:
+                stacked: true
+              xaxis:
+                labels:
+                  format: dd
+              legend:
+                show: false
+            graph_span: 7d1s
+            span:
+              end: day
+            show:
+              last_updated: false
+            header:
+              title: Heating
+              show: true
+              show_states: true
+              colorize_states: true
+            series:
+              - entity: sensor.esphome_web_976d7c_electricity_intake_heating_day_kwh
+                name: Input Power
+                type: column
+                group_by:
+                  func: max
+                  duration: 1d
+                show:
+                  datalabels: true
+              - entity: sensor.esphome_web_976d7c_heat_yield_heating_day_kwh
+                name: Heat Output
+                type: column
+                group_by:
+                  func: max
+                  duration: 1d
+                show:
+                  datalabels: true
+          - type: custom:apexcharts-card
+            apex_config:
+              chart:
+                stacked: true
+              xaxis:
+                labels:
+                  format: dd
+              legend:
+                show: false
+            graph_span: 7d1s
+            span:
+              end: day
+            show:
+              last_updated: false
+            header:
+              show: true
+              title: Warm Water
+              show_states: true
+              colorize_states: true
+            series:
+              - entity: sensor.esphome_web_976d7c_electricity_intake_dhw_day_kwh
+                name: Input Power
+                type: column
+                group_by:
+                  func: max
+                  duration: 1d
+                show:
+                  datalabels: true
+              - entity: sensor.esphome_web_976d7c_heating_dhw_day_kwh
+                name: Heat Output
+                type: column
+                group_by:
+                  func: max
+                  duration: 1d
+                show:
+                  datalabels: true
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+          - type: vertical-stack
+            cards:
+              - type: tile
+                entity: sensor.esphome_web_976d7c_program_switch
+              - type: tile
+                entity: sensor.esphome_web_976d7c_summer_operation
+              - type: tile
+                entity: sensor.esphome_web_976d7c_dhw_eco
+              - type: horizontal-stack
+                cards:
+                  - type: gauge
+                    entity: sensor.esphome_web_976d7c_total_cop_value
+                    min: 2
+                    max: 4
+                    needle: false
+                    name: COP Total
+                  - type: gauge
+                    entity: sensor.esphome_web_976d7c_cop_value_heating
+                    min: 3
+                    max: 4
+                    name: COP Heating
+                  - type: gauge
+                    entity: sensor.esphome_web_976d7c_cop_value_hot_water
+                    min: 2
+                    max: 4
+                    name: COP Warm Water
+          - type: custom:apexcharts-card
+            graph_span: 12h
+            header:
+              show: true
+              show_states: true
+              colorize_states: true
+            all_series_config:
+              stroke_width: 1
+              curve: smooth
+            series:
+              - entity: sensor.esphome_web_976d7c_outside_temp
+                name: Outside Temp
+              - entity: sensor.esphome_web_976d7c_source_actual
+                name: Source Liquid Temp
+          - type: custom:apexcharts-card
+            graph_span: 12h
+            header:
+              show: true
+              show_states: true
+              colorize_states: true
+            all_series_config:
+              stroke_width: 1
+              curve: smooth
+            series:
+              - entity: sensor.esphome_web_976d7c_hot_gas_temp
+                name: Hot Gas Temperature
+              - entity: sensor.esphome_web_976d7c_collector_internal_temp
+                name: Collector Internal Temperature
+            apex_config:
+              yaxis:
+                - title:
+                    text: ''
+                    decimalsInFloat: 1
+                - title:
+                    text: ''
+                    decimalsInFloat: 1
+                  opposite: true
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+          - type: custom:apexcharts-card
+            graph_span: 6h
+            header:
+              title: Flow Temperatures
+              show: true
+              show_states: true
+              colorize_states: true
+            all_series_config:
+              stroke_width: 1
+              curve: smooth
+            series:
+              - entity: sensor.esphome_web_976d7c_heating_return_actual
+                name: Supply Temperature
+              - entity: sensor.esphome_web_976d7c_flow_setpoint_temp_hk1
+                name: Flow Setpoint
+              - entity: sensor.esphome_web_976d7c_return_flow_internal_temp
+                name: Return Temperature
+          - type: custom:apexcharts-card
+            header:
+              title: Boiler Temperatures
+              show: true
+              show_states: true
+              colorize_states: true
+            all_series_config:
+              stroke_width: 1
+              curve: smooth
+            series:
+              - entity: sensor.esphome_web_976d7c_storage_tank_internal_temp
+                name: Actual
+              - entity: sensor.esphome_web_976d7c_storage_tank_setpoint_temp
+                name: Target
+              - entity: >-
+                  sensor.esphome_web_976d7c_set_storage_tank_setpoint_temp_comfort
+                name: Comfort Setpoint
+              - entity: sensor.esphome_web_976d7c_set_storage_tank_setpoint_temp_eco
+                name: ECO Setpoint
+            apex_config:
+              yaxis:
+                - title:
+                    text: ''
+                    decimalsInFloat: 1
+                - title:
+                    text: ''
+                    decimalsInFloat: 1
+                  opposite: true
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+            heading: CAN Messaging
+          - type: entities
+            entities:
+              - entity: select.esphome_web_976d7c_can_address_selector
+              - entity: input_text.heatpump_elster_index_input
+                name: Elster Index
+              - entity: input_text.heatpump_can_value_input
+                name: CAN Value
+              - entity: button.esphome_web_976d7c_send_manual_can_message
