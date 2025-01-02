@@ -891,7 +891,7 @@ sensor:
     if (dBm > MAX_DBM) dBm = MAX_DBM;
     return ((dBm - MIN_DBM) / (MAX_DBM - MIN_DBM)) * 100;
 
-#Warmwasser-Temperaturabfrage + Gerätespezifischer Offset 3.9 °C
+#Warmwasser-Temperaturabfrage
 - platform: template
   name: "STORAGE_TANK_INTERNAL_TEMP"
   id: SPEICHERISTTEMP
@@ -900,8 +900,6 @@ sensor:
   device_class: "temperature"
   state_class: "measurement"
   accuracy_decimals: 1
-  #filters:
-  #  - offset: 3.9
   update_interval: 1min
   lambda: |-
     readSignal(&CanMembers[cm_pump], GetElsterIndex("SPEICHERISTTEMP"));
@@ -1231,11 +1229,11 @@ canbus:
           return;
         }
         if(ei->EnglishName == "STORAGE_TANK_INTERNAL_TEMP") {
-          id(SPEICHERISTTEMP).publish_state(std::stof(value));
+          id(SPEICHERISTTEMP).publish_state(std::stof(value)+3);
           return;
         }
         if(ei->EnglishName == "SPEICHERISTTEMP") {
-          id(SPEICHERISTTEMP).publish_state(std::stof(value));
+          id(SPEICHERISTTEMP).publish_state(std::stof(value)+3);
           return;
         }
         if(ei->EnglishName == "SOURCE_ACTUAL") {
